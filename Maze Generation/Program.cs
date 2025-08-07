@@ -47,12 +47,12 @@ namespace Maze_Generation
             // maze generation
             int chanceOfLoopAround = 5; // the higher, the smaller. Lowest value of 1; 5 is a good value
             Random rand = new Random();
-            Vector2 position = new Vector2(width / 2, height / 2);
+            Vector2 position = new Vector2(width / 2, height / 2); // used as the "cursor" in the maze. this is the position that gets written over
             List<int> directions = new List<int>();
-            directions.Add(0);
             while (!MazeNode.IsFinished(maze, width, height))
             {
                 directions.Clear();
+                // this set of if statements tracks which directions are possible to continue the maze path
                 if (position.X + 1 < width)
                 {
                     if (maze[(int)position.X + 1, (int)position.Y].touched == false)
@@ -97,16 +97,18 @@ namespace Maze_Generation
                         directions.Add(3);
                     }
                 }
-                if (directions.Count == 0)
+                if (directions.Count == 0) // moves the cursor if there's no where to go
                 {
                     // rather than picking a random map location, pick one that has a maze that went through nearby, and connect to that maze
+                    // this connects the maze together, instead of having seperate sections
                     for (int i = 0; i < width; i++)
                     {
                         for (int j = 0; j < height; j++)
                         {
-                            if (!maze[i, j].touched)
+                            if (!maze[i, j].touched) // each maze node has a "touched" property. The cursor will touch tiles, but then it won't want to go back over them. 
                             {
                                 List<Vector2> touchings = new List<Vector2>();
+                                // this makes sure the cursor is within 1 tile of a pregenerated maze
                                 if (i > 0)
                                 {
                                     if (maze[i-1, j].touched)
@@ -135,12 +137,13 @@ namespace Maze_Generation
                                         touchings.Add(new Vector2(0, 1));
                                     }
                                 }
-                                if (touchings.Count > 0)
+                                if (touchings.Count > 0) 
                                 {
                                     Vector2 dir = touchings[rand.Next(0, touchings.Count)];
                                     // needs to get the current tile side, and the applied tile side
                                     int side = 0;
                                     int flipside = 3;
+                                    // this switch case is used to convert the vector2 dir into an index in the boolean array
                                     switch (dir.X.ToString() + dir.Y.ToString())
                                     {
                                         case "10":
@@ -185,6 +188,7 @@ namespace Maze_Generation
                     int dir = directions[rand.Next(0, directions.Count)];
                     maze[(int)position.X, (int)position.Y].touched = true;
                     maze[(int)position.X, (int)position.Y].type[dir] = true;
+                    // prevents one way paths
                     if (dir == 0)
                     {
                         position.X++;
