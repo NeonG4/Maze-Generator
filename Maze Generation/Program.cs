@@ -45,9 +45,9 @@ namespace Maze_Generation
                 }
             }
             // maze generation
-            int chanceOfLoopAround = 5; // the higher, the smaller. Lowest value of 1; 5 is a good value
+            int chanceOfLoopAround = 7; // the higher, the smaller. Lowest value of 1; 5 is a good value. Higher values will take longer to run
             Random rand = new Random();
-            Vector2 position = new Vector2(width / 2, height / 2); // used as the "cursor" in the maze. this is the position that gets written over
+            Vector2 position = new Vector2(0, 0); // used as the "cursor" in the maze. this is the position that gets written over
             List<int> directions = new List<int>();
             while (!MazeNode.IsFinished(maze, width, height))
             {
