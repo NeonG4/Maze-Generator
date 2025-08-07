@@ -41,6 +41,7 @@ namespace Maze_Generation
             {
                 for (int j = 0; j < height; j++)
                 {
+                    // maze is initialized to empty. Rather than carving out a maze, the system builds it up
                     maze[i, j] = new MazeNode([false, false, false, false]);
                 }
             }
