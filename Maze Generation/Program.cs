@@ -10,7 +10,7 @@ namespace Maze_Generation
         {
             if (type.Length != 4)
             {
-                throw new Exception($"Expected array of length 4, got {type.Length} instead");
+                throw new Exception($"Expected array of length 4, got {type.Length} instead"); // tiles are squares, so 4 sides are needed.
             }
             this.type = type;
         }
@@ -222,9 +222,10 @@ namespace Maze_Generation
             {
                 for (int i = 0; i < width; i++)
                 {
-                    if (maze[i, j].touched)
+                    if (maze[i, j].touched) // if maze hasn't been touched, then don't draw anything there
                     {
                         char print = new char();
+                        // switch determines which maze code to print
                         switch (maze[i, j].type)
                         {
                             case [true, true, true, true]:
