@@ -33,9 +33,9 @@ namespace Maze_Generation
     {
         static void Main(string[] args)
         {
-
+            // IDEA: rather than looping through maze to find a possible starting spot, store the spot in a variable, and go to that last variable spot.
             // maze setup
-            int width = 50, height = 25;
+            int width = 200, height = 50;
             MazeNode[,] maze = new MazeNode[width, height];
             for (int i = 0; i < width; i++)
             {
@@ -46,12 +46,17 @@ namespace Maze_Generation
                 }
             }
             // maze generation
-            int chanceOfLoopAround = 7; // the higher, the smaller. Lowest value of 1; 5 is a good value. Higher values will take longer to run
+            int frequency = 0; // how frequently will the screen be rerendered, 1 is 100%, 2 is 5%, 4 is 25%... zero won't render
+            int chanceOfLoopAround = 5; // the higher, the smaller. Lowest value of 1; 5 is a good value. Higher values will take longer to run
             Random rand = new Random();
             Vector2 position = new Vector2(0, 0); // used as the "cursor" in the maze. this is the position that gets written over
             List<int> directions = new List<int>();
+            Console.WriteLine($"About to generate maze of dimensions {width} by {height}. Press any key to continue...");
+            Console.ReadKey();
+            int freq = 0;
             while (!MazeNode.IsFinished(maze, width, height))
             {
+                freq++;
                 directions.Clear();
                 // this set of if statements tracks which directions are possible to continue the maze path
                 if (position.X + 1 < width)
@@ -182,7 +187,13 @@ namespace Maze_Generation
                         }
                     }
                     directions.Add(0);
-                    RenderMap(maze, width, height, false);
+                    if (frequency != 0)
+                    {
+                        if (freq % frequency == 0 && frequency != 0)
+                        {
+                            RenderMap(maze, width, height, false);
+                        }
+                    }
                 }
                 else
                 {
